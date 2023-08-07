@@ -40,7 +40,7 @@ class HittingAgent(AgentBase):
         self.predicted_time = 0.75
         self.hit_vel = 1.0
         self.replan_hit = False
-
+        print(self.env_info)
         self.dt = 1 / self.env_info['robot']['control_frequency']
         self.ee_height = self.env_info['robot']["ee_desired_height"]
 
@@ -70,14 +70,15 @@ class HittingAgent(AgentBase):
 
         goal_pos = np.array([0.98, 0.0, 0.0])
         goal_pos_robot = world_to_robot(self.env_info["robot"]["base_frame"][0], goal_pos)
+        print(goal_pos_robot)
         self.goal_pos_2d = goal_pos_robot[0][:2]
 
         self.agent_params = {
             'hit_range': [0.8, 1.3],
             'max_plan_steps': 10,
         }
-
         self.plan_thread = None
+
 
     def reset(self):
         self.restart = True
@@ -98,12 +99,14 @@ class HittingAgent(AgentBase):
         self.replan_hit = False
         self.plan_thread = threading.Thread(target=self._plan_trajectory_thread, daemon=True)
 
+
     def draw_action(self, obs):
         if self.restart:
             self.restart = False
             puck_pos = self.get_puck_pos(obs)
 
             self.x_cmd = self.get_ee_pose(obs)[0][:2]
+            
             self.v_cmd = np.zeros(2)
             self.q_cmd = self.get_joint_pos(obs)
             self.dq_cmd = self.get_joint_vel(obs)

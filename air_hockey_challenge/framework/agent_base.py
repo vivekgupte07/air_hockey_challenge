@@ -31,6 +31,7 @@ class AgentBase(Agent):
             robot_data='none',
         )
 
+
     def reset(self):
         """
         Reset the agent
@@ -40,6 +41,7 @@ class AgentBase(Agent):
 
         """
         raise NotImplementedError
+
 
     def draw_action(self, observation):
         """ Draw an action, i.e., desired joint position and velocity, at every time step.
